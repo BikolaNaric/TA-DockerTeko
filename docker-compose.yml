@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # RabbitMQ Service
   rabbitmq:
@@ -14,18 +12,23 @@ services:
   # MongoDB Replica Set
   mongo1:
     image: mongo
+    container_name: mongo1
+    command: --replSet rs0
     ports:
       - "27017:27017"
-    command: --replSet rs0
     volumes:
       - mongo1-data:/data/db
+
   mongo2:
     image: mongo
+    container_name: mongo2
     command: --replSet rs0
     volumes:
       - mongo2-data:/data/db
+
   mongo3:
     image: mongo
+    container_name: mongo3
     command: --replSet rs0
     volumes:
       - mongo3-data:/data/db
@@ -34,3 +37,22 @@ volumes:
   mongo1-data:
   mongo2-data:
   mongo3-data:
+
+
+#Publisher Service
+  publisher:
+    build:
+      context: ./stock-publisher
+    depends_on:
+      - rabbitmq
+
+
+#Frontend
+
+  frontend:
+    build:
+      context: ./stock-liveview
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo1
