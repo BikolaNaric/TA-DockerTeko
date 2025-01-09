@@ -6,5 +6,20 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: adminNikiArnel
+      RABBITMQ_DEFAULT_PASS: Supergem123&Banane
+
+
+version: '3.8'
+services:
+  mongo1:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command: --replSet rs0
+  mongo2:
+    image: mongo
+    command: --replSet rs0
+  mongo3:
+    image: mongo
+    command: --replSet rs0
