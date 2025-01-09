@@ -1,5 +1,7 @@
 version: '3.8'
+
 services:
+  # RabbitMQ Service
   rabbitmq:
     image: rabbitmq:management
     ports:
@@ -9,17 +11,26 @@ services:
       RABBITMQ_DEFAULT_USER: adminNikiArnel
       RABBITMQ_DEFAULT_PASS: Supergem123&Banane
 
-
-version: '3.8'
-services:
+  # MongoDB Replica Set
   mongo1:
     image: mongo
     ports:
       - "27017:27017"
     command: --replSet rs0
+    volumes:
+      - mongo1-data:/data/db
   mongo2:
     image: mongo
     command: --replSet rs0
+    volumes:
+      - mongo2-data:/data/db
   mongo3:
     image: mongo
     command: --replSet rs0
+    volumes:
+      - mongo3-data:/data/db
+
+volumes:
+  mongo1-data:
+  mongo2-data:
+  mongo3-data:
