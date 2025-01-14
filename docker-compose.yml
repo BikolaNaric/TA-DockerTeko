@@ -33,26 +33,22 @@ services:
     volumes:
       - mongo3-data:/data/db
 
-volumes:
-  mongo1-data:
-  mongo2-data:
-  mongo3-data:
-
-
-#Publisher Service
+  # Publisher Service
   publisher:
     build:
       context: ./stock-publisher
     depends_on:
       - rabbitmq
 
-
-#Frontend
-
-  frontend:
+  # Consumer Service
+  consumer:
     build:
-      context: ./stock-liveview
-    ports:
-      - "3000:3000"
+      context: ./stock-consumer
     depends_on:
+      - rabbitmq
       - mongo1
+
+volumes:
+  mongo1-data:
+  mongo2-data:
+  mongo3-data:
