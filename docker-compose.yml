@@ -2,12 +2,13 @@ services:
   # RabbitMQ Service
   rabbitmq:
     image: rabbitmq:management
+    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: adminNikiArnel
-      RABBITMQ_DEFAULT_PASS: Supergem123&Banane
+      RABBITMQ_DEFAULT_USER: admin  
+      RABBITMQ_DEFAULT_PASS: Password123
 
   # MongoDB Replica Set
   mongo1:
@@ -52,3 +53,23 @@ volumes:
   mongo1-data:
   mongo2-data:
   mongo3-data:
+
+# Frontend Sevice
+frontend:
+  build:
+    context: ./stock-liveview
+  ports:
+    - "3000:3000"
+  depends_on:
+    - mongo1
+
+#Loadbalancer Service
+
+loadbalancer:
+  image: nginx
+  volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
+  ports:
+    - "80:80"
+  depends_on:
+    - frontend
